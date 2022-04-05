@@ -17,17 +17,24 @@ vll vl;
 vector<vll> vadj;
 
 // funciona con c++ 11, 14, 17
+/* Segment Tree con range updates y range queries
+ * los updates/queries son de [0, N-1]
+ * Recordatorio: LazyPropagation lo unico que hace es guardar un valor
+ * en el array lazy, que puede llegar a ser utilizado. Sin embargo
+ * no se asegura que se use antes de que se acutalize con un nuevo valor
+ *
+ */
 class SegmentTree {
 	private:
+		
+		// override this value
+		ll default_value = -1;
 		
 		int n;
 		vll A, st, lazy;
 		
 		int l(int p){ return p<<1; }
 		int r(int p){ return (p<<1) + 1; }
-		
-		// override this value
-		ll default_value = -1;
 		
 		// override this funcion
 		ll function_merge(ll a, ll b){
@@ -38,7 +45,6 @@ class SegmentTree {
 		ll lazy_function(ll lazy_flag, ll prev_value, ll L, ll R){
 			return 0;
 		}
-		
 		
 		ll conquer(ll a, ll b){
 			if(a == default_value) return b;
@@ -89,7 +95,7 @@ class SegmentTree {
 				int m = (L+R)/2;
 				update(l(p), L, m, i, min(m,j), val);
 				update(r(p), m+1, R, max(i,m+1), j, val);
-				st[p] = conquer(st[l(p)], st[r(p)]);
+				st[p] = conquer(RMQ(l(p), L, m, L, m), RMQ(r(p), m+1, R, m+1, R));
 			}
 		}
 	
@@ -101,6 +107,7 @@ class SegmentTree {
 		}
 		
 		void update(int i, int j, ll val) { update(1,0,n-1, i, j, val);}
+		
 		ll RMQ(int i, int j) {
 			return RMQ(1,0,n-1,i,j);
 		}
