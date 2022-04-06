@@ -46,6 +46,7 @@ class FenwickTree{
 	    return sum;
 	  }
 	
+	 // [i, j] inclusive
 	  ll rsq(int i, int j) { return rsq(j) - rsq(i-1); } // inc/exclusion
 	
 	  // updates value of the i-th element by v (v can be +ve/inc or -ve/dec)
